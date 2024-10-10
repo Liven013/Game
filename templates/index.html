@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мафия - Игра</title>
+    <script>
+        let socket;
+
+        // Подключение к WebSocket при загрузке страницы
+        function connectWebSocket() {
+            socket = new WebSocket("ws://localhost:8080/ws");
+            socket.onmessage = function(event) {
+                document.getElementById("message").innerText = event.data;
+            };
+        }
+
+        window.onload = connectWebSocket;
+    </script>
+</head>
+<body>
+    <h1>Игра</h1>
+
+    <div id="message">Ожидание сообщений от сервера...</div>
+
+    <h2>Форма</h2>
+    <form action="/submit" method="post">
+        <label for="name">Имя:</label>
+        <input type="text" id="name" name="name">
+        <br><br>
+        <input type="submit" value="Отправить">
+    </form>
+</body>
+</html>
