@@ -21,7 +21,6 @@ func StartRouter() {
 	// Получение IP-адреса хоста перед тем, как открыть браузер
 	hostIP := handlers.GetHostIP()
 
-	// Автоматическое открытие браузера с QR-кодом
 	openBrowser(fmt.Sprintf("http://%s:8080/qr", hostIP))
 
 	// Запуск сервера
