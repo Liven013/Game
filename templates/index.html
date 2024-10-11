@@ -17,6 +17,37 @@
         }
 
         window.onload = connectWebSocket;
+
+        // Обработчик отправки формы
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector("form");
+
+            form.addEventListener("submit", function(event) {
+                event.preventDefault(); // Останавливаем стандартное поведение отправки формы
+
+                const formData = {
+                    name: document.getElementById("name").value,
+                    role: document.getElementById("role").value 
+                };
+
+                // Отправляем данные формы в формате JSON через fetch
+                fetch("/submit", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json()) // Ожидаем JSON-ответ от сервера
+                .then(data => {
+                    // Выводим ответ от сервера
+                    document.getElementById("message").innerText = `Ответ сервера: ${data.message}`;
+                })
+                .catch(error => {
+                    console.error("Ошибка:", error);
+                });
+            });
+        });
     </script>
 </head>
 <body>
@@ -24,11 +55,19 @@
 
     <div id="message">Ожидание сообщений от сервера...</div>
 
-    <h2>Name</h2>
-    <form action="/submit" method="post">
-        <label for="name"></label>
+    <h2>Введите ваше имя</h2>
+    <form>
+        <label for="name">Name:</label>
         <input type="text" id="name" name="name">
         <br><br>
+        
+        <label for="role">Role:</label>
+        <select id="role" name="role">
+            <option value="player">Игрок</option>
+            <option value="leader">Ведущий</option>
+        </select>
+        <br><br>
+        
         <input type="submit" value="Войти">
     </form>
 </body>

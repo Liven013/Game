@@ -30,6 +30,8 @@ func StartRouter() {
 func SetEndpoints(g *gin.Engine) {
 	g.GET("/", handlers.Start)
 	g.GET("/qr", handlers.QRGenerator)
+	g.POST("/submit", handlers.RegistratePlayer)
+
 }
 
 func openBrowser(url string) {
