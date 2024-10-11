@@ -2,36 +2,67 @@ package handlers
 
 import (
 	"fmt"
-	"os/exec"
-	"runtime"
+	"net"
+	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/skip2/go-qrcode"
 )
 
-func GenerateQRCode(ip string) {
+var HostIP net.IP
+
+func GetHostIP() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		fmt.Println("Error retrieving addresses:", err)
+		return ""
+	}
+
+	var ip net.IP
+	for _, addr := range addrs {
+		if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			// Проверяем, что это IPv4-адрес
+			if ipnet.IP.To4() != nil {
+				ip = ipnet.IP
+				break
+			}
+		}
+	}
+
+	if ip == nil {
+		fmt.Println("No suitable IP address found")
+		return ""
+	}
+	HostIP = ip
+	fmt.Println("Server is running on:", ip.String())
+	return ip.String()
+}
+
+func QRGenerator(c *gin.Context) {
+	qrData := fmt.Sprintf("http://%s:8080", GetHostIP())
+
+	// Генерация QR-кода в памяти и отправка изображения PNG
+	png, err := qrcode.Encode(qrData, qrcode.Medium, 256)
+	if err != nil {
+		c.String(http.StatusInternalServerError, "Failed to generate QR code")
+		return
+	}
+
+	// Отправляем изображение PNG в ответе
+	c.Data(http.StatusOK, "image/png", png)
+}
+
+func Start(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.html", "")
+}
+
+func GenerateQRCode(ip string) error {
 	qrFile := "qrcode.png"
-	err := qrcode.WriteFile(fmt.Sprintf("http://%s:8080", ip), qrcode.Medium, 256, qrFile)
+	err := qrcode.WriteFile(ip, qrcode.Medium, 256, qrFile)
 	if err != nil {
 		fmt.Println("Error generating QR code:", err)
-		return
+		return err
 	}
 	fmt.Println("QR code generated and saved as:", qrFile)
-
-	var cmd *exec.Cmd
-	switch os := runtime.GOOS; os {
-	case "darwin": // macOS
-		cmd = exec.Command("open", qrFile)
-	case "windows": // Windows
-		cmd = exec.Command("cmd", "/c", "start", qrFile)
-	case "linux": // Linux
-		cmd = exec.Command("xdg-open", qrFile)
-	default:
-		fmt.Println("Unsupported OS:", os)
-		return
-	}
-
-	err = cmd.Start()
-	if err != nil {
-		fmt.Println("Error opening QR code:", err)
-	}
+	return nil
 }
