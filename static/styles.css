@@ -1,0 +1,105 @@
+/* Основной стиль страницы */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Контейнер для всего контента */
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%; /* Используем 90% ширины экрана на мобильных устройствах */
+    max-width: 400px; /* Устанавливаем максимальную ширину */
+    text-align: center;
+}
+
+/* Заголовки */
+h1 {
+    color: #2c3e50;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #34495e;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+/* Стиль для сообщения от сервера */
+.message-box {
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Форма и поля ввода */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+    color: #34495e;
+    margin-bottom: 5px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Кнопка отправки */
+.submit-btn {
+    background-color: #2980b9;
+    color: #fff;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%; /* Кнопка занимает всю ширину */
+}
+
+.submit-btn:hover {
+    background-color: #3498db;
+}
+
+/* Медиа-запросы для адаптации на мобильных устройствах */
+@media (max-width: 600px) {
+    /* Размеры заголовков */
+    h1 {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    /* Уменьшаем отступы и увеличиваем поля для ввода */
+    .input-field {
+        padding: 10px;
+    }
+
+    /* Подгоняем размер кнопки */
+    .submit-btn {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+}
