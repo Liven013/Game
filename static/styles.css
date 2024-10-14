@@ -59,6 +59,8 @@ label {
 
 .input-field {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     padding: 12px;
     border: 1px solid #bdc3c7;
     border-radius: 5px;

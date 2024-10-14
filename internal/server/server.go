@@ -19,9 +19,7 @@ func StartRouter() {
 	SetEndpoints(router)
 
 	// Получение IP-адреса хоста перед тем, как открыть браузер
-	hostIP := handlers.GetHostIP()
-
-	openBrowser(fmt.Sprintf("http://%s:8080/qr", hostIP))
+	openBrowser(fmt.Sprintf("http://%s:8080/qr", handlers.HostIP))
 
 	// Запуск сервера
 	router.Run(":8080")
@@ -31,6 +29,7 @@ func SetEndpoints(g *gin.Engine) {
 	g.GET("/", handlers.Start)
 	g.GET("/qr", handlers.QRGenerator)
 	g.POST("/submit", handlers.RegistratePlayer)
+	g.GET("/waiting", handlers.SseHandler)
 
 }
 

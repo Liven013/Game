@@ -9,6 +9,8 @@ import (
 	"github.com/skip2/go-qrcode"
 )
 
+var HostIP = GetHostIP()
+
 func GetHostIP() string {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
@@ -47,5 +49,6 @@ func QRGenerator(c *gin.Context) {
 }
 
 func Start(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.html", "")
+	c.HTML(http.StatusOK, "index.html", gin.H{
+		"HostIP": HostIP})
 }

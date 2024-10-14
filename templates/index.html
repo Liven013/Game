@@ -7,48 +7,32 @@
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <link rel="stylesheet" href="/static/styles.css"> <!-- Подключаем CSS -->
     <script>
-        let socket;
+        const formData = {
+    name: document.getElementById("name").value,
+    role: document.getElementById("role").value
+};
 
-        // Подключение к WebSocket при загрузке страницы
-        function connectWebSocket() {
-            socket = new WebSocket("ws://localhost:8080/ws");
-            socket.onmessage = function(event) {
-                document.getElementById("message").innerText = event.data;
-            };
-        }
-
-        window.onload = connectWebSocket;
-
-        // Обработчик отправки формы
-        document.addEventListener("DOMContentLoaded", function() {
-            const form = document.querySelector("form");
-
-            form.addEventListener("submit", function(event) {
-                event.preventDefault(); // Останавливаем стандартное поведение отправки формы
-
-                const formData = {
-                    name: document.getElementById("name").value,
-                    role: document.getElementById("role").value // Получаем выбранную роль
-                };
-
-                // Отправляем данные формы в формате JSON через fetch
-                fetch("/submit", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(formData)
-                })
-                .then(response => response.json()) // Ожидаем JSON-ответ от сервера
-                .then(data => {
-                    // Выводим ответ от сервера
-                    document.getElementById("message").innerText = `Ответ сервера: ${data.message}`;
-                })
-                .catch(error => {
-                    console.error("Ошибка:", error);
-                });
-            });
-        });
+// Отправляем данные формы в формате JSON через fetch
+fetch("/submit", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(formData)
+})
+.then(response => response.json()) // Ожидаем JSON-ответ от сервера
+.then(data => {
+    // Если ответ успешный, перенаправляем на новую страницу
+    if (data.redirect) {
+        window.location.href = data.redirect; // Перенаправляем на указанный URL
+    } else {
+        // Выводим ответ от сервера
+        document.getElementById("message").innerText = `Ответ сервера: ${data.message}`;
+    }
+})
+.catch(error => {
+    console.error("Ошибка:", error);
+});
     </script>
 </head>
 <body>

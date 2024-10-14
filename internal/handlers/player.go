@@ -20,11 +20,11 @@ func RegistratePlayer(c *gin.Context) {
 		return
 	}
 
-	// Логика обработки данных (например, сохранение или валидация)
-	responseMessage := "Добро пожаловать, " + data.Name + "!"
+	CreatePayer()
 
-	// Возвращаем JSON-ответ
+	// Возвращаем JSON-ответ с URL для перенаправления
 	c.JSON(http.StatusOK, gin.H{
-		"message": responseMessage,
+		"redirect": "/waiting", // URL для перенаправления
+		"message":  "Регистрация успешна!",
 	})
 }

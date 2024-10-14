@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server-Sent Events Example</title>
+</head>
+<body>
+    <h1>Получаем события от сервера:</h1>
+    <div id="messages"></div>
+
+    <script>
+        const eventSource = new EventSource("/waiting");
+
+        eventSource.onmessage = function(event) {
+            const messagesDiv = document.getElementById("name");
+            messagesDiv.innerHTML += `<p>${event.data}</p>`;
+        };
+
+        eventSource.onerror = function(event) {
+            console.error("Ошибка при получении события:", event);
+            eventSource.close(); // Закрываем соединение при ошибке
+        };
+    </script>
+</body>
+</html>
