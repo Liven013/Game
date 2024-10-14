@@ -12,9 +12,9 @@ import (
 func StartRouter() {
 	router := gin.Default()
 
-	router.LoadHTMLGlob("templates/*")
+	router.LoadHTMLGlob("front_part/templates/*")
 
-	router.Static("/static", "./static")
+	router.Static("front_part/static", "./front_part/static")
 
 	SetEndpoints(router)
 
