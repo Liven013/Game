@@ -1,6 +1,8 @@
 package main
 
-import "game/internal/server"
+import (
+	"game/internal/server"
+)
 
 func main() {
 	server.StartRouter()

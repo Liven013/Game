@@ -20,8 +20,6 @@ func RegistratePlayer(c *gin.Context) {
 		return
 	}
 
-	CreatePayer()
-
 	// Возвращаем JSON-ответ с URL для перенаправления
 	c.JSON(http.StatusOK, gin.H{
 		"redirect": "/waiting", // URL для перенаправления

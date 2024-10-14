@@ -30,6 +30,10 @@ func SetEndpoints(g *gin.Engine) {
 	g.GET("/qr", handlers.QRGenerator)
 	g.POST("/submit", handlers.RegistratePlayer)
 	g.GET("/waiting", handlers.SseHandler)
+	g.GET("/players", handlers.GetAll)
+	g.POST("/players", handlers.CreateUser)
+	g.GET("/players/:id", handlers.GetOne)
+	g.DELETE("/players/:id", handlers.DelByID)
 
 }
 
