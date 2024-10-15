@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"game/internal/models"
+	"game/internal/storage"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,9 +22,11 @@ func RegistratePlayer(c *gin.Context) {
 		return
 	}
 
+	storage.Players.Create(models.User{Name: data.Name, Role: data.Role})
+
 	// Возвращаем JSON-ответ с URL для перенаправления
 	c.JSON(http.StatusOK, gin.H{
-		"redirect": "/waiting", // URL для перенаправления
+		"redirect": "/wroom", // URL для перенаправления
 		"message":  "Регистрация успешна!",
 	})
 }
