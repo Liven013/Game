@@ -15,6 +15,7 @@ func GetAll(c *gin.Context) {
 }
 
 func CreateUser(c *gin.Context) {
+	//исправить на ключ по имени! и обрабатывать совпадения
 	var user models.User
 	err := c.BindJSON(&user)
 	if err != nil {

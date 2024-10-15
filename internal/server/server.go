@@ -28,8 +28,9 @@ func StartRouter() {
 func SetEndpoints(g *gin.Engine) {
 	g.GET("/", handlers.Start)
 	g.GET("/qr", handlers.QRGenerator)
+
 	g.POST("/submit", handlers.RegistratePlayer)
-	g.GET("/waiting", handlers.SseHandler)
+	g.GET("/wroom", handlers.Wroom)
 
 	//управление Каталогом игроков
 	g.GET("/players", handlers.GetAll)

@@ -7,32 +7,40 @@
     <link rel="icon" type="image/x-icon" href="/front_part/static/favicon.ico">
     <link rel="stylesheet" href="/front_part/static/styles.css"> <!-- Подключаем CSS -->
     <script>
-        const formData = {
-    name: document.getElementById("name").value,
-    role: document.getElementById("role").value
-};
+         function submitForm(event) {
+            event.preventDefault(); // Отменяем стандартное поведение отправки формы
 
-// Отправляем данные формы в формате JSON через fetch
-fetch("/submit", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(formData)
-})
-.then(response => response.json()) // Ожидаем JSON-ответ от сервера
-.then(data => {
-    // Если ответ успешный, перенаправляем на новую страницу
-    if (data.redirect) {
-        window.location.href = data.redirect; // Перенаправляем на указанный URL
-    } else {
-        // Выводим ответ от сервера
-        document.getElementById("message").innerText = `Ответ сервера: ${data.message}`;
-    }
-})
-.catch(error => {
-    console.error("Ошибка:", error);
-});
+            // Собираем данные формы
+            const formData = {
+                name: document.getElementById("name").value,
+                role: document.getElementById("role").value
+            };
+
+            // Отправляем данные формы в формате JSON через fetch
+            fetch("/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json()) // Ожидаем JSON-ответ от сервера
+            .then(data => {
+                // Если ответ содержит URL для перенаправления, выполняем его
+                if (data.redirect) {
+                    window.location.href = data.redirect; // Перенаправляем на указанный URL
+                } else {
+                    // Выводим сообщение от сервера
+                    document.getElementById("message").innerText = `Ответ сервера: ${data.message}`;
+                }
+            })
+            .catch(error => {
+                console.error("Ошибка:", error);
+            });
+        }
+        window.onload = function() {
+            document.querySelector("form").addEventListener("submit", submitForm);
+        };
     </script>
 </head>
 <body>
