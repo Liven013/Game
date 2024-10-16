@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"game/internal/models"
 	"strconv"
+	"sync"
 )
 
 type LocalStorage struct {
 	S       map[string]models.User
 	counter int
+	mu      sync.Mutex
 }
 
 func (ls *LocalStorage) FindFreePositin() string {
@@ -23,11 +25,15 @@ func (ls *LocalStorage) FindFreePositin() string {
 }
 
 func (ls *LocalStorage) Create(user models.User) {
+	ls.mu.Lock()
+	defer ls.mu.Unlock()
 	user.ID = ls.FindFreePositin()
 	ls.S[user.ID] = user
 }
 
 func (ls *LocalStorage) GetOne(id string) (models.User, error) {
+	ls.mu.Lock()
+	defer ls.mu.Unlock()
 	i, err := strconv.Atoi(id)
 	if err != nil {
 		return models.User{}, errors.New("ошибка преобразования индекса")
@@ -39,6 +45,8 @@ func (ls *LocalStorage) GetOne(id string) (models.User, error) {
 }
 
 func (ls *LocalStorage) GetAll() []models.User {
+	ls.mu.Lock()
+	defer ls.mu.Unlock()
 	users := make([]models.User, len(ls.S))
 	for k, val := range ls.S {
 		i, _ := strconv.Atoi(k)
@@ -48,6 +56,8 @@ func (ls *LocalStorage) GetAll() []models.User {
 }
 
 func (ls *LocalStorage) Delete(id string) error {
+	ls.mu.Lock()
+	defer ls.mu.Unlock()
 	i, err := strconv.Atoi(id)
 	if err != nil {
 		return errors.New("ошибка преобразования индекса")

@@ -22,15 +22,13 @@ func RegistratePlayer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid request"})
 		return
 	}
-	fmt.Println("REG_1")
-	storage.Players.Create(models.User{Name: data.Name, Role: data.Role})
-	fmt.Println("REG_2")
 
+	storage.Players.Create(models.User{Name: data.Name, Role: data.Role})
+
+	broadcast(fmt.Sprintf("New user registered: %s as %s", data.Name, data.Role))
 	// Возвращаем JSON-ответ с URL для перенаправления
 	c.JSON(http.StatusOK, gin.H{
 		"redirect": "/wroom", // URL для перенаправления
 		"message":  "Регистрация успешна!",
 	})
-	fmt.Println("REG_3")
-
 }
