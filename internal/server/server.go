@@ -31,8 +31,8 @@ func SetEndpoints(g *gin.Engine) {
 
 	g.POST("/submit", handlers.RegistratePlayer)
 
-	g.GET("/wroom", handlers.Wroom)
 	g.GET("/ws", handlers.WSConnection)
+	g.GET("/wroom", handlers.Wroom)
 
 	//управление Каталогом игроков
 	g.GET("/players", handlers.GetAll)

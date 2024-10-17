@@ -1,11 +1,11 @@
 ###
 curl http://localhost:8080/players
 ###
-curl http://localhost:8080/players \
+curl http://localhost:8080/submit \
     --include \
     --header "Content-Type: application/json" \
     --request "POST" \
-    --data '{"id": "3", "name": "New", "role": "player"}'
+    --data '{"name": "New", "role": "player"}'
 ###
 curl http://localhost:8080/players/2
 

@@ -1,13 +1,12 @@
 package handlers
 
 import (
-	"game/internal/models"
-
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func Wroom(c *gin.Context) {
-	var player models.User
-	c.BindJSON(&player)
+	// Отправляем HTML-страницу без выполнения WSConnection
+	c.HTML(http.StatusOK, "w_page.html", gin.H{"messege": "new wroom"})
 }

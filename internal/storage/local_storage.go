@@ -14,7 +14,7 @@ type LocalStorage struct {
 	mu      sync.Mutex
 }
 
-func (ls *LocalStorage) FindFreePositin() string {
+func (ls *LocalStorage) FindFreePosition() string {
 	for i := 1; i < len(ls.S); i++ {
 		id := fmt.Sprint(i)
 		if _, ok := ls.S[id]; !ok {
@@ -27,7 +27,7 @@ func (ls *LocalStorage) FindFreePositin() string {
 func (ls *LocalStorage) Create(user models.User) {
 	ls.mu.Lock()
 	defer ls.mu.Unlock()
-	user.ID = ls.FindFreePositin()
+	user.ID = ls.FindFreePosition()
 	ls.S[user.ID] = user
 }
 
@@ -48,9 +48,10 @@ func (ls *LocalStorage) GetAll() []models.User {
 	ls.mu.Lock()
 	defer ls.mu.Unlock()
 	users := make([]models.User, len(ls.S))
-	for k, val := range ls.S {
-		i, _ := strconv.Atoi(k)
-		users[i] = val
+	id := 0
+	for _, val := range ls.S {
+		users[id] = val
+		id++
 	}
 	return users
 }

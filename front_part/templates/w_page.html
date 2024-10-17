@@ -1,27 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Server-Sent Events Example</title>
+    <title>Комната ожидания</title>
     <link rel="icon" type="image/x-icon" href="/front_part/static/favicon.ico">
+    <link rel="stylesheet" href="/front_part/static/styles.css">
+    <script>
+        let socket;
+        window.addEventListener("DOMContentLoaded", () => {
+            const participantsList = document.getElementById("participants");
+            const statusMessage = document.getElementById("statusMessage");
+
+            // Подключение к WebSocket
+            socket = new WebSocket("ws://" + window.location.host + "/ws");
+
+            socket.onopen = function() {
+                statusMessage.innerText = "Соединение установлено.";
+            };
+
+            socket.onmessage = function(event) {
+                const newParticipant = document.createElement("li");
+                newParticipant.textContent = event.data;
+                participantsList.appendChild(newParticipant);
+            };
+
+            socket.onclose = function() {
+                statusMessage.innerText = "Соединение закрыто.";
+            };
+
+            socket.onerror = function(error) {
+                statusMessage.innerText = "Ошибка: " + error.message;
+            };
+        });
+
+        function closeConnection() {
+            if (socket) {
+                socket.close();
+            }
+        }
+
+        window.addEventListener("beforeunload", closeConnection);
+    </script>
 </head>
 <body>
-    <h1>Получаем события от сервера:</h1>
-    <div id="messages"></div>
-
-    <script>
-        const eventSource = new EventSource("/waiting");
-
-        eventSource.onmessage = function(event) {
-            const messagesDiv = document.getElementById("name");
-            messagesDiv.innerHTML += `<p>${event.data}</p>`;
-        };
-
-        eventSource.onerror = function(event) {
-            console.error("Ошибка при получении события:", event);
-            eventSource.close(); // Закрываем соединение при ошибке
-        };
-    </script>
+    <div class="container">
+        <h1>Комната ожидания</h1>
+        <p id="statusMessage">Подключение...</p>
+        <h2>Список участников:</h2>
+        <ul id="participants"></ul>
+    </div>
 </body>
 </html>
