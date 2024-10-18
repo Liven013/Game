@@ -10,7 +10,7 @@ import (
 )
 
 func GetAll(c *gin.Context) {
-	users := storage.Players.GetAll()
+	users := storage.Users.GetAll()
 	c.IndentedJSON(http.StatusOK, users)
 }
 
@@ -21,13 +21,13 @@ func CreateUser(c *gin.Context) {
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "bad request"})
 	}
-	storage.Players.Create(user)
+	storage.Users.UsersStorage.Create(user)
 	GetAll(c)
 }
 
 func GetOne(c *gin.Context) {
 	id := c.Param("id")
-	user, err := storage.Players.GetOne(id)
+	user, err := storage.Users.UsersStorage.GetOne(id)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": fmt.Sprint(err)})
 	}
@@ -36,7 +36,7 @@ func GetOne(c *gin.Context) {
 
 func DelByID(c *gin.Context) {
 	id := c.Param("id")
-	err := storage.Players.Delete(id)
+	err := storage.Users.Delete(id)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": fmt.Sprint(err)})
 	}

@@ -2,8 +2,6 @@ package storage
 
 import "game/internal/models"
 
-var Players Storage = NewLocalStorage()
-
 type Storage interface {
 	Create(user models.User) models.User
 	GetOne(id string) (models.User, error)
