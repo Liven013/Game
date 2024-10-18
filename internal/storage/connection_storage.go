@@ -30,6 +30,13 @@ func (cs *ConnStorage) Delete(id string) error {
 	cs.mu.Unlock()
 	return nil
 }
+func (cs *ConnStorage) GetAll() []models.User {
+	return cs.UsersStorage.GetAll()
+}
+
+func (cs *ConnStorage) GetOne(id string) (models.User, error) {
+	return cs.UsersStorage.GetOne(id)
+}
 
 func NewConnStorage() *ConnStorage {
 	ls := NewLocalStorage()
