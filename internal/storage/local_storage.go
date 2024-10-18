@@ -15,6 +15,8 @@ type LocalStorage struct {
 }
 
 func (ls *LocalStorage) FindFreePosition() string {
+	ls.mu.Lock()
+	defer ls.mu.Unlock()
 	for i := 1; i < len(ls.S); i++ {
 		id := fmt.Sprint(i)
 		if _, ok := ls.S[id]; !ok {
@@ -24,11 +26,12 @@ func (ls *LocalStorage) FindFreePosition() string {
 	return fmt.Sprint(len(ls.S) + 1)
 }
 
-func (ls *LocalStorage) Create(user models.User) {
+func (ls *LocalStorage) Create(user models.User) models.User {
 	ls.mu.Lock()
 	defer ls.mu.Unlock()
 	user.ID = ls.FindFreePosition()
 	ls.S[user.ID] = user
+	return user
 }
 
 func (ls *LocalStorage) GetOne(id string) (models.User, error) {
@@ -47,6 +50,7 @@ func (ls *LocalStorage) GetOne(id string) (models.User, error) {
 func (ls *LocalStorage) GetAll() []models.User {
 	ls.mu.Lock()
 	defer ls.mu.Unlock()
+
 	users := make([]models.User, len(ls.S))
 	id := 0
 	for _, val := range ls.S {
@@ -59,6 +63,7 @@ func (ls *LocalStorage) GetAll() []models.User {
 func (ls *LocalStorage) Delete(id string) error {
 	ls.mu.Lock()
 	defer ls.mu.Unlock()
+
 	i, err := strconv.Atoi(id)
 	if err != nil {
 		return errors.New("ошибка преобразования индекса")
