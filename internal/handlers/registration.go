@@ -25,6 +25,7 @@ var (
 // HTTP-обработчик для регистрации пользователя
 func RegistratePlayer(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"redirect": fmt.Sprint("http://" + HostIP + ":8080/wroom")})
+
 }
 
 // WebSocket-обработчик

@@ -1,20 +1,110 @@
-body {
-    background-color: #4b2e1f; /* Темно-коричневый фон */
-    color: #e0c097; /* Цвет текста */
-    font-family: 'Georgia', serif;
+@import url('https://fonts.googleapis.com/css2?family=Arima:wght@100..700&family=Chelsea+Market&family=Pangolin&display=swap');*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-h1, h2 {
+/* Prevent font size inflation */
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+/* Remove default margin in favour of better control in authored CSS */
+body, h1, h2, h3, h4, p,
+figure, blockquote, dl, dd {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Set shorter line heights on headings and interactive elements */
+h1, h2, h3, h4,
+button, input, label {
+  line-height: 1.1;
+}
+
+/* Balance text wrapping on headings */
+h1, h2,
+h3, h4 {
+  text-wrap: balance;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+  color: currentColor;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input, button,
+textarea, select {
+  font: inherit;
+}
+
+/* Make sure textarea without a rows attribute are not tiny */
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+/* Anything that has been anchored to should have extra scroll margin */
+:target {
+  scroll-margin-block: 5ex;
+}
+
+body {
+    
+    color: #e0c097; /* Цвет текста */
+    font-family: "Pangolin", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    background-image: linear-gradient(
+      #5e3d28,
+     #362518
+    );
+}
+
+h1 {
+    font-size: 500%;
+}
+
+h2, .message-box {
     color: #e8cda3;
+}
+h1, h2, .message-box {
+    display: inline-block;
+    margin-top: 20px;
 }
 
 .container {
+    
+    text-align: center;
     background-color: #6b4f3a;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     max-width: 800px;
     margin: auto;
+    margin-top: 10px;
 }
 
 .input-field, .submit-btn {
@@ -24,7 +114,7 @@ h1, h2 {
     padding: 10px;
     border-radius: 5px;
     margin-top: 10px;
-    width: calc(100% - 22px); /* Делаем ширину на 100%, но с учетом отступов */
+    width: 100%; /* Делаем ширину на 100%, но с учетом отступов */
     max-width: 100%; /* Ограничиваем ширину */
     box-sizing: border-box; /* Включаем padding в расчёт ширины */
 }
@@ -32,4 +122,8 @@ h1, h2 {
 .input-field:focus {
     outline: none;
     border: 1px solid #e8cda3; /* Добавляем подсветку при фокусе */
+}
+
+.form-group {
+    text-align: left;
 }

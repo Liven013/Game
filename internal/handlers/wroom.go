@@ -7,6 +7,6 @@ import (
 )
 
 func Wroom(c *gin.Context) {
-	// Отправляем HTML-страницу без выполнения WSConnection
+	// Отправляем HTML-страницу
 	c.HTML(http.StatusOK, "w_page.html", gin.H{"messege": "new wroom"})
 }
