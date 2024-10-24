@@ -2,6 +2,7 @@ package storage
 
 import (
 	"encoding/json"
+	"fmt"
 	"game/internal/models"
 	"sync"
 
@@ -17,10 +18,13 @@ type ConnStorage struct {
 }
 
 func (cs *ConnStorage) Create(user models.User, ws *websocket.Conn) {
+	fmt.Println("зашел в сюда")
 	user = cs.UsersStorage.Create(user)
 	cs.mu.Lock()
 	cs.CS[user.ID] = ws
+	fmt.Println("тут")
 	cs.mu.Unlock()
+	fmt.Println("тут1")
 }
 
 func (cs *ConnStorage) Delete(i interface{}) error {
@@ -92,6 +96,5 @@ func (cs *ConnStorage) GetOne(id string) (models.User, error) {
 
 func NewConnStorage() *ConnStorage {
 	ls := NewLocalStorage()
-
 	return &ConnStorage{UsersStorage: ls}
 }

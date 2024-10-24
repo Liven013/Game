@@ -15,8 +15,6 @@ type LocalStorage struct {
 }
 
 func (ls *LocalStorage) FindFreePosition() string {
-	ls.mu.Lock()
-	defer ls.mu.Unlock()
 	for i := 1; i < len(ls.S); i++ {
 		id := fmt.Sprint(i)
 		if _, ok := ls.S[id]; !ok {
@@ -27,8 +25,12 @@ func (ls *LocalStorage) FindFreePosition() string {
 }
 
 func (ls *LocalStorage) Create(user models.User) models.User {
+
 	ls.mu.Lock()
-	defer ls.mu.Unlock()
+
+	defer func() {
+		ls.mu.Unlock()
+	}()
 	user.ID = ls.FindFreePosition()
 	ls.S[user.ID] = user
 	return user
@@ -78,8 +80,10 @@ func (ls *LocalStorage) Delete(id string) error {
 func NewLocalStorage() *LocalStorage {
 	var host models.User = models.User{ID: "0", Name: "Server", Role: "host"}
 	counter := 0
-	players := map[string]models.User{
-		host.ID: host,
-	}
+	players := make(map[string]models.User)
+	players["0"] = host
+	// players := map[string]models.User{
+	// 	host.ID: host,
+	// }
 	return &LocalStorage{S: players, counter: counter}
 }

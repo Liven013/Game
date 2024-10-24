@@ -30,25 +30,34 @@ func RegistratePlayer(c *gin.Context) {
 
 // WebSocket-обработчик
 func WSConnection(c *gin.Context) {
-	var data FormData
-	if err := c.BindJSON(&data); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid request"})
-		return
-	}
 	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprint(err)})
 		return
 	}
-	defer ws.Close()
 
+	// defer ws.Close()
+	var data FormData
+
+	if err := ws.ReadJSON(&data); err != nil {
+		fmt.Println("Ошибка декодирования JSON:", err)
+	}
+	fmt.Println("уже тут2")
 	storage.Users.Create(models.User{Name: data.Name, Role: data.Role}, ws)
+	fmt.Println("уже тут1")
 	storage.Users.Broadcast(fmt.Sprintf("New user registered: %s as %s", data.Name, data.Role))
-
-	go func() {
-		for {
-			storage.Users.SendAllUsers()
+	fmt.Println("уже тут")
+	storage.Users.SendAllUsers()
+	fmt.Println("сюдааа")
+	for {
+		_, _, err := ws.ReadMessage()
+		if err != nil {
+			// Закрываем соединение, если возникает ошибка чтения
+			fmt.Println("Ошибка чтения сообщения:", err)
+			break
 		}
-	}()
-	select {}
+	}
+	fmt.Println("и че такое?")
+	storage.Users.Delete(ws)
+	storage.Users.SendAllUsers()
 }

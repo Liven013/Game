@@ -14,7 +14,7 @@ func StartRouter() {
 
 	router.LoadHTMLGlob("front_part/templates/*")
 
-	router.Static("front_part/static", "./front_part/static")
+	router.Static("front_part", "./front_part")
 
 	SetEndpoints(router)
 

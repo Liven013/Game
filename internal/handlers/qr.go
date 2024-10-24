@@ -39,7 +39,7 @@ func GetHostIP() string {
 func QRGenerator(c *gin.Context) {
 	qrData := fmt.Sprintf("http://%s:8080", GetHostIP())
 
-	png, err := qrcode.Encode(qrData, qrcode.Medium, 256)
+	png, err := qrcode.Encode(qrData, qrcode.Medium, 512)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Failed to generate QR code")
 		return

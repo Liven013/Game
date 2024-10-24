@@ -6,42 +6,7 @@
     <title>Комната ожидания</title>
     <link rel="icon" type="image/x-icon" href="/front_part/static/favicon.ico">
     <link rel="stylesheet" href="/front_part/static/styles.css">
-    <script>
-        let socket;
-        window.addEventListener("DOMContentLoaded", () => {
-            const participantsList = document.getElementById("participants");
-            const statusMessage = document.getElementById("statusMessage");
-
-            // Подключение к WebSocket
-            socket = new WebSocket("ws://" + window.location.host + "/ws");
-
-            socket.onopen = function() {
-                statusMessage.innerText = "Соединение установлено.";
-            };
-
-            socket.onmessage = function(event) {
-                const newParticipant = document.createElement("li");
-                newParticipant.textContent = event.data;
-                participantsList.appendChild(newParticipant);
-            };
-
-            socket.onclose = function() {
-                statusMessage.innerText = "Соединение закрыто.";
-            };
-
-            socket.onerror = function(error) {
-                statusMessage.innerText = "Ошибка: " + error.message;
-            };
-        });
-
-        function closeConnection() {
-            if (socket) {
-                socket.close();
-            }
-        }
-
-        window.addEventListener("beforeunload", closeConnection);
-    </script>
+    <script src="/front_part/js/ws_conn.js"></script>
 </head>
 <body>
     <div class="container">
